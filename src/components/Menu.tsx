@@ -1,11 +1,34 @@
 'use client';
 
-import { useState } from 'react';
-import { menuItems } from '@/data/menu';
+import { useState, useEffect } from 'react';
 import ProductCard from './ProductCard';
+import { createClient } from '@/utils/supabase/client';
+
+export interface MenuItem {
+  id: string;
+  name: string;
+  category: 'Burgers' | 'Chicken' | 'Sides' | 'Beverages';
+  price: number;
+  description: string;
+  image: string;
+}
 
 export default function Menu() {
   const [activeCategory, setActiveCategory] = useState<string>('All');
+  const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const supabase = createClient();
+
+  useEffect(() => {
+    async function fetchMenu() {
+      const { data } = await supabase.from('products').select('*').order('id');
+      if (data) {
+        setMenuItems(data as MenuItem[]);
+      }
+      setLoading(false);
+    }
+    fetchMenu();
+  }, []);
 
   const categories = ['All', 'Burgers', 'Chicken', 'Sides', 'Beverages'];
 
@@ -43,11 +66,17 @@ export default function Menu() {
         </div>
 
         {/* Product Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 xl:gap-8">
-          {filteredItems.map((item) => (
-            <ProductCard key={item.id} item={item} />
-          ))}
-        </div>
+        {loading ? (
+          <div className="flex justify-center items-center py-20">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 xl:gap-8">
+            {filteredItems.map((item) => (
+              <ProductCard key={item.id} item={item} />
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );

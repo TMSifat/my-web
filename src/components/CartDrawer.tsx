@@ -1,7 +1,10 @@
 'use client';
 
-import { X, Plus, Minus, ShoppingBag } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { X, Plus, Minus, ShoppingBag, Loader2, CheckCircle } from 'lucide-react';
 import { useCartStore } from '@/store/useCartStore';
+import { createClient } from '@/utils/supabase/client';
+import { User } from '@supabase/supabase-js';
 
 export default function CartDrawer() {
   const isDrawerOpen = useCartStore((state) => state.isDrawerOpen);
@@ -10,6 +13,69 @@ export default function CartDrawer() {
   const updateQuantity = useCartStore((state) => state.updateQuantity);
   const removeItem = useCartStore((state) => state.removeItem);
   const getSubtotal = useCartStore((state) => state.getSubtotal);
+  const clearCart = useCartStore((state) => state.clearCart);
+
+  const [user, setUser] = useState<User | null>(null);
+  const [isCheckingOut, setIsCheckingOut] = useState(false);
+  const [checkoutSuccess, setCheckoutSuccess] = useState(false);
+  const supabase = createClient();
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user || null);
+    });
+  }, []);
+
+  const handleCheckout = async () => {
+    if (!user) {
+      window.location.href = '/login';
+      return;
+    }
+
+    if (items.length === 0) return;
+
+    setIsCheckingOut(true);
+    try {
+      // 1. Create the order
+      const { data: order, error: orderError } = await supabase
+        .from('orders')
+        .insert({
+          user_id: user.id,
+          total_amount: getSubtotal()
+        })
+        .select()
+        .single();
+
+      if (orderError) throw orderError;
+
+      // 2. Insert order items
+      const orderItems = items.map(item => ({
+        order_id: order.id,
+        product_id: item.id,
+        quantity: item.quantity,
+        price: item.price
+      }));
+
+      const { error: itemsError } = await supabase
+        .from('order_items')
+        .insert(orderItems);
+
+      if (itemsError) throw itemsError;
+
+      // 3. Success state
+      setCheckoutSuccess(true);
+      setTimeout(() => {
+        clearCart();
+        setCheckoutSuccess(false);
+        setDrawerOpen(false);
+      }, 3000);
+    } catch (error) {
+      console.error('Checkout failed:', error);
+      alert('Checkout failed. Please try again.');
+    } finally {
+      setIsCheckingOut(false);
+    }
+  };
 
   if (!isDrawerOpen) return null;
 
@@ -92,7 +158,7 @@ export default function CartDrawer() {
         </div>
 
         {/* Footer */}
-        {items.length > 0 && (
+        {items.length > 0 && !checkoutSuccess && (
           <div className="border-t bg-white p-6 space-y-4">
             <div className="flex justify-between text-lg font-bold text-foreground">
               <span>Subtotal</span>
@@ -101,9 +167,31 @@ export default function CartDrawer() {
             <p className="text-sm text-gray-500 text-center">
               Taxes and shipping calculated at checkout
             </p>
-            <button className="w-full py-4 bg-primary hover:bg-red-600 text-white font-bold rounded-xl shadow-lg shadow-red-500/30 transition-all transform active:scale-[0.98]">
-              Proceed to Checkout
+            <button 
+              onClick={handleCheckout}
+              disabled={isCheckingOut}
+              className="w-full flex items-center justify-center py-4 bg-orange-500 hover:bg-orange-600 disabled:bg-orange-300 text-white font-bold rounded-xl shadow-lg shadow-orange-500/30 transition-all transform active:scale-[0.98]"
+            >
+              {isCheckingOut ? (
+                <>
+                  <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                  Processing...
+                </>
+              ) : (
+                user ? 'Proceed to Checkout' : 'Login to Checkout'
+              )}
             </button>
+          </div>
+        )}
+        
+        {/* Success State */}
+        {checkoutSuccess && (
+          <div className="border-t bg-white p-6 flex flex-col items-center justify-center space-y-4">
+            <CheckCircle className="h-16 w-16 text-green-500 animate-in zoom-in" />
+            <h3 className="text-xl font-bold text-green-600">Order Placed Successfully!</h3>
+            <p className="text-gray-500 text-center text-sm">
+              Your delicious food is being prepared. We've sent a receipt to your email.
+            </p>
           </div>
         )}
       </div>
