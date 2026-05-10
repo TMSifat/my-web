@@ -1,13 +1,13 @@
-import Hero from "@/components/Hero";
-import Menu from "@/components/Menu";
-import Offers from "@/components/Offers";
+import { PrismaHero } from '@/components/PrismaHero';
+import { PrismaAbout } from '@/components/PrismaAbout';
+import { PrismaFeatures } from '@/components/PrismaFeatures';
 
 export default function Home() {
   return (
-    <div className="flex flex-col min-h-screen">
-      <Hero />
-      <Offers />
-      <Menu />
-    </div>
+    <main className="min-h-screen bg-black">
+      <PrismaHero />
+      <PrismaAbout />
+      <PrismaFeatures />
+    </main>
   );
 }
