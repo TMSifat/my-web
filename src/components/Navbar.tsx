@@ -43,6 +43,7 @@ export default function Navbar() {
     { name: 'Home', href: '/' },
     { name: 'Menu', href: '/#menu' },
     { name: 'Offers', href: '/#offers' },
+    { name: 'Demo', href: '/demo' },
     ...(user && adminWhitelist.includes(user.email || '') ? [{ name: 'Admin', href: '/admin' }] : []),
   ];
 
