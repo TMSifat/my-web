@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useRef } from "react";
-import { motion, useInView, useScroll, useTransform } from "framer-motion";
+import { motion, useInView, useTransform, MotionValue } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 interface WordsPullUpProps {
@@ -75,7 +75,7 @@ interface AnimatedLetterProps {
   children: string;
   index: number;
   total: number;
-  progress: any;
+  progress: MotionValue<number>;
 }
 
 export const AnimatedLetter: React.FC<AnimatedLetterProps> = ({ children, index, total, progress }) => {
