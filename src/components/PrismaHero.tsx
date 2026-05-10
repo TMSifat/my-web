@@ -76,8 +76,7 @@ export const PrismaHero = () => {
               <WordsPullUp
                 text="CrunchBite"
                 showAsterisk
-                className="text-[14vw] sm:text-[12vw] md:text-[10vw] lg:text-[9vw] xl:text-[8vw] 2xl:text-[7vw] font-black leading-[0.85] tracking-[-0.05em] uppercase whitespace-nowrap"
-                style={{ color: "#E1E0CC" }}
+                className="text-[14vw] sm:text-[12vw] md:text-[10vw] lg:text-[9vw] xl:text-[8vw] 2xl:text-[7vw] font-black leading-[0.85] tracking-[-0.05em] uppercase whitespace-nowrap text-[#E1E0CC]"
               />
             </div>
 

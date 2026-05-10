@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 import { Clock } from "lucide-react";
 
 // --- PROPS INTERFACE ---
-export interface MenuItemCardProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface MenuItemCardProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onDrag' | 'onDragStart' | 'onDragEnd' | 'onAnimationStart' | 'onContextMenu' | 'onPointerDown' | 'onPointerMove' | 'onPointerUp'> {
   imageUrl: string;
   isVegetarian: boolean;
   name: string;
@@ -49,7 +49,7 @@ const MenuItemCard = React.forwardRef<HTMLDivElement, MenuItemCardProps>(
 
     const vegIconVariants = {
        initial: { scale: 0 },
-       animate: { scale: 1, transition: { delay: 0.3, type: "spring", stiffness: 200 } },
+       animate: { scale: 1, transition: { delay: 0.3, type: "spring" as const, stiffness: 200 } },
     };
 
     return (
