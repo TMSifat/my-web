@@ -16,8 +16,26 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "CrunchBite | Prisma Studio",
-  description: "Experience the ultimate cinematic culinary journey.",
+  title: {
+    default: "CrunchBite | Prisma Studio",
+    template: "%s | CrunchBite"
+  },
+  description: "Experience the ultimate cinematic culinary journey at Prisma Studio. Fine burgers, premium sides, and an immersive dining atmosphere.",
+  keywords: ["burger", "premium food", "cinema", "prisma studio", "crunchbite", "dhaka food", "best burgers"],
+  authors: [{ name: "Prisma Studio" }],
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://crunchbite.studio",
+    title: "CrunchBite | Prisma Studio",
+    description: "Experience the ultimate cinematic culinary journey.",
+    siteName: "CrunchBite",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "CrunchBite | Prisma Studio",
+    description: "Experience the ultimate cinematic culinary journey.",
+  }
 };
 
 export default function RootLayout({

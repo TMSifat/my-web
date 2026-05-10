@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { motion } from 'framer-motion';
 import { 
   LayoutDashboard, 
   Users, 
@@ -9,10 +10,12 @@ import {
   Settings, 
   LogOut,
   ShoppingBag,
-  BarChart3
+  BarChart3,
+  MessageSquare
 } from 'lucide-react';
 import { createClient } from '@/utils/supabase/client';
 import { useAdminStore } from '@/store/useAdminStore';
+import { usePathname } from 'next/navigation';
 
 export default function AdminLayout({
   children,
@@ -20,6 +23,7 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   const supabase = createClient();
+  const pathname = usePathname();
   const adminName = useAdminStore((state) => state.adminName);
 
   const handleLogout = async () => {
@@ -28,58 +32,66 @@ export default function AdminLayout({
   };
 
   return (
-    <div className="flex h-screen bg-slate-50 dark:bg-slate-950">
+    <div className="flex h-screen bg-[#050505] text-[#E1E0CC]">
       {/* Sidebar */}
-      <aside className="w-64 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col">
-        <div className="p-6 border-b border-slate-200 dark:border-slate-800">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center">
-              <ShoppingBag className="w-5 h-5 text-white" />
+      <aside className="w-72 bg-[#0a0a0a] border-r border-white/5 flex flex-col">
+        <div className="p-8 border-b border-white/5">
+          <Link href="/" className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-orange-500 rounded-xl flex items-center justify-center shadow-lg shadow-orange-500/20">
+              <ShoppingBag className="w-6 h-6 text-white" />
             </div>
-            <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-orange-500 to-red-600">
-              CrunchBite
+            <span className="text-2xl font-black uppercase tracking-tighter text-[#E1E0CC]">
+              Prisma
             </span>
           </Link>
-          <p className="text-xs text-slate-500 mt-1 uppercase tracking-wider font-semibold">Admin Panel</p>
+          <p className="text-[10px] text-primary/40 mt-2 uppercase tracking-[0.3em] font-black">Studio Admin</p>
         </div>
 
-        <nav className="flex-1 p-4 space-y-2">
-          <NavItem href="/admin" icon={<LayoutDashboard size={20} />} label="Dashboard" active />
-          <NavItem href="/admin/finance" icon={<DollarSign size={20} />} label="Finance" />
-          <NavItem href="/admin/users" icon={<Users size={20} />} label="User Management" />
-          <NavItem href="/admin/analytics" icon={<BarChart3 size={20} />} label="Analytics" />
-          <div className="pt-4 pb-2">
-            <div className="h-px bg-slate-200 dark:bg-slate-800 mx-2" />
+        <nav className="flex-1 p-6 space-y-3">
+          <NavItem href="/admin" icon={<LayoutDashboard size={20} />} label="Overview" active={pathname === '/admin'} />
+          <NavItem href="/admin/messages" icon={<MessageSquare size={20} />} label="Messages" active={pathname === '/admin/messages'} />
+          <NavItem href="/admin/finance" icon={<DollarSign size={20} />} label="Finance" active={pathname === '/admin/finance'} />
+          <NavItem href="/admin/users" icon={<Users size={20} />} label="Customers" active={pathname === '/admin/users'} />
+          <NavItem href="/admin/analytics" icon={<BarChart3 size={20} />} label="Analytics" active={pathname === '/admin/analytics'} />
+          
+          <div className="pt-6 pb-2">
+            <div className="h-px bg-white/5 mx-2" />
           </div>
-          <NavItem href="/admin/settings" icon={<Settings size={20} />} label="Settings" />
+          
+          <NavItem href="/admin/settings" icon={<Settings size={20} />} label="Settings" active={pathname === '/admin/settings'} />
         </nav>
 
-        <div className="p-4 border-t border-slate-200 dark:border-slate-800">
+        <div className="p-6 border-t border-white/5">
           <button 
             onClick={handleLogout}
-            className="flex items-center gap-3 w-full px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-600 rounded-xl transition-colors"
+            className="flex items-center gap-3 w-full px-5 py-4 text-primary/40 hover:bg-red-500/10 hover:text-red-500 rounded-2xl transition-all duration-300 group"
           >
-            <LogOut size={20} />
-            <span className="font-medium">Logout</span>
+            <LogOut size={20} className="group-hover:rotate-12 transition-transform" />
+            <span className="font-bold uppercase text-[10px] tracking-widest">Sign Out</span>
           </button>
         </div>
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 overflow-y-auto">
-        <header className="h-16 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-8 flex items-center justify-between sticky top-0 z-10">
-          <h1 className="text-lg font-semibold text-slate-800 dark:text-white uppercase tracking-tight">Admin Dashboard</h1>
+      <main className="flex-1 overflow-y-auto bg-noise">
+        <header className="h-20 bg-[#0a0a0a]/80 backdrop-blur-md border-b border-white/5 px-8 flex items-center justify-between sticky top-0 z-50">
           <div className="flex items-center gap-4">
-            <div className="text-right">
-              <p className="text-sm font-medium">{adminName}</p>
-              <p className="text-xs text-slate-500">Administrator</p>
+             <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+             <h1 className="text-xs font-black text-primary/60 uppercase tracking-[0.2em]">System Operational</h1>
+          </div>
+          
+          <div className="flex items-center gap-6">
+            <div className="text-right hidden sm:block">
+              <p className="text-sm font-bold text-[#E1E0CC]">{adminName}</p>
+              <p className="text-[10px] text-primary/40 uppercase tracking-widest font-black">Authorized Admin</p>
             </div>
-            <div className="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 font-bold border border-orange-200">
+            <div className="w-12 h-12 rounded-2xl bg-primary/10 border border-white/5 flex items-center justify-center text-primary font-black shadow-inner">
               {adminName.split(' ').map(n => n[0]).join('')}
             </div>
           </div>
         </header>
-        <div className="p-8">
+        
+        <div className="relative min-h-[calc(100vh-5rem)]">
           {children}
         </div>
       </main>
@@ -91,16 +103,23 @@ function NavItem({ href, icon, label, active = false }: { href: string; icon: Re
   return (
     <Link 
       href={href}
-      className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group ${
+      className={`flex items-center gap-4 px-5 py-4 rounded-2xl transition-all duration-500 group relative overflow-hidden ${
         active 
-          ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/20' 
-          : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
+          ? 'bg-primary text-black shadow-xl shadow-primary/20' 
+          : 'text-primary/40 hover:bg-white/5 hover:text-primary'
       }`}
     >
-      <span className={`${active ? 'text-white' : 'text-slate-500 group-hover:text-orange-500'}`}>
+      <span className={`${active ? 'text-black' : 'text-primary/40 group-hover:text-primary group-hover:scale-110 transition-all'}`}>
         {icon}
       </span>
-      <span className="font-medium">{label}</span>
+      <span className={`text-[10px] font-black uppercase tracking-[0.2em] ${active ? 'text-black' : ''}`}>{label}</span>
+      
+      {active && (
+        <motion.div 
+          layoutId="nav-active"
+          className="absolute inset-0 bg-white/10 pointer-events-none"
+        />
+      )}
     </Link>
   );
 }
