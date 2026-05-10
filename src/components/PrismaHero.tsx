@@ -55,7 +55,7 @@ export const PrismaHero = () => {
             {/* Heading */}
             <div className="col-span-12 lg:col-span-8">
               <WordsPullUp
-                text="Prisma"
+                text="CrunchBite"
                 showAsterisk
                 className="text-[26vw] sm:text-[24vw] md:text-[22vw] lg:text-[20vw] xl:text-[19vw] 2xl:text-[20vw] font-medium leading-[0.85] tracking-[-0.07em]"
                 style={{ color: "#E1E0CC" }}
@@ -70,7 +70,7 @@ export const PrismaHero = () => {
                 transition={{ duration: 0.8, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
                 className="text-primary/70 text-xs sm:text-sm md:text-base leading-[1.2] max-w-xs"
               >
-                Prisma is a worldwide network of visual artists, filmmakers and storytellers bound not by place, status or labels but by passion and hunger to unlock potential through our unique perspectives.
+                CrunchBite is a global destination for food lovers, flavor chasers and culinary storytellers bound by a hunger for the perfect crunch and unique taste perspectives.
               </motion.p>
 
               <motion.button
