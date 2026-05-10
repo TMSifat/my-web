@@ -48,7 +48,7 @@ export async function POST(request: Request) {
         const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
         
         const chat = model.startChat({
-          history: history.map((msg: any) => ({
+          history: history.map((msg: { sender: string; text: string }) => ({
             role: msg.sender === 'user' ? 'user' : 'model',
             parts: [{ text: msg.text }],
           })),

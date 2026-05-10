@@ -1,4 +1,4 @@
-import { login, signup, loginWithGoogle } from './actions'
+import { login, loginWithGoogle } from './actions'
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
 import { ArrowLeft, Mail, Lock } from 'lucide-react'

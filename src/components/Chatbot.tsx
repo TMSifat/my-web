@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MessageSquare, X, Send, Bot, User, ChevronRight } from 'lucide-react';
+import { MessageSquare, X, Send, Bot, User } from 'lucide-react';
 
 interface Message {
   id: string;
@@ -31,7 +31,7 @@ export default function Chatbot() {
     }
   }, [messages, isTyping]);
 
-  const handleSend = async (text: string) => {
+  const handleSend = React.useCallback(async (text: string) => {
     if (!text.trim()) return;
 
     const userMessage: Message = {
@@ -82,7 +82,7 @@ export default function Chatbot() {
     } finally {
       setIsTyping(false);
     }
-  };
+  }, [messages]);
 
   const quickActions = [
     "What's on the menu?",
