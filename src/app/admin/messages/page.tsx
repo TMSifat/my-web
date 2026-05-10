@@ -66,7 +66,7 @@ export default function AdminMessages() {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
           <h1 className="text-4xl font-black text-[#E1E0CC] uppercase tracking-tighter">Customer Messages</h1>
-          <p className="text-primary/40 text-sm font-bold uppercase tracking-widest mt-2">Manage your inbox from Prisma Studio</p>
+          <p className="text-primary/40 text-sm font-bold uppercase tracking-widest mt-2">Manage your inbox from CrunchBite Studio</p>
         </div>
 
         <div className="relative group">

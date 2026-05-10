@@ -32,16 +32,16 @@ export default function AdminLayout({
   };
 
   return (
-    <div className="flex h-screen bg-[#050505] text-[#E1E0CC]">
+    <div className="flex h-screen bg-[#020202] text-[#E1E0CC]">
       {/* Sidebar */}
-      <aside className="w-72 bg-[#0a0a0a] border-r border-white/5 flex flex-col">
+      <aside className="w-72 bg-[#050505] border-r border-white/5 flex flex-col relative z-20">
         <div className="p-8 border-b border-white/5">
-          <Link href="/" className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-orange-500 rounded-xl flex items-center justify-center shadow-lg shadow-orange-500/20">
+          <Link href="/" className="flex items-center gap-3 group">
+            <div className="w-10 h-10 bg-orange-500 rounded-xl flex items-center justify-center shadow-lg shadow-orange-500/20 group-hover:scale-110 transition-transform">
               <ShoppingBag className="w-6 h-6 text-white" />
             </div>
-            <span className="text-2xl font-black uppercase tracking-tighter text-[#E1E0CC]">
-              Prisma
+            <span className="text-xl font-black uppercase tracking-tighter text-[#E1E0CC] whitespace-nowrap">
+              CrunchBite
             </span>
           </Link>
           <p className="text-[10px] text-primary/40 mt-2 uppercase tracking-[0.3em] font-black">Studio Admin</p>
@@ -73,11 +73,14 @@ export default function AdminLayout({
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 overflow-y-auto bg-noise">
-        <header className="h-20 bg-[#0a0a0a]/80 backdrop-blur-md border-b border-white/5 px-8 flex items-center justify-between sticky top-0 z-50">
+      <main className="flex-1 overflow-y-auto bg-[#0a0a0a] relative">
+        {/* Subtle Background Glow */}
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-orange-500/5 rounded-full blur-[120px] pointer-events-none" />
+        
+        <header className="h-20 bg-[#050505]/80 backdrop-blur-md border-b border-white/5 px-8 flex items-center justify-between sticky top-0 z-50">
           <div className="flex items-center gap-4">
              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-             <h1 className="text-xs font-black text-primary/60 uppercase tracking-[0.2em]">System Operational</h1>
+             <h1 className="text-xs font-black text-primary/60 uppercase tracking-[0.2em]">Crunch Control System</h1>
           </div>
           
           <div className="flex items-center gap-6">

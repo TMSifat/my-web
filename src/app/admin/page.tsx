@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { 
   TrendingUp, 
@@ -8,15 +10,19 @@ import {
   ArrowDownRight,
   Clock
 } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 export default function AdminDashboard() {
   return (
-    <div className="space-y-8">
+    <div className="space-y-12">
       {/* Welcome Section */}
-      <div>
-        <h2 className="text-3xl font-bold text-slate-900 dark:text-white">Overview</h2>
-        <p className="text-slate-500">Here's what's happening at CrunchBite today.</p>
-      </div>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+      >
+        <h2 className="text-4xl font-black text-[#E1E0CC] uppercase tracking-tighter">Overview</h2>
+        <p className="text-primary/40 text-sm font-bold uppercase tracking-widest mt-2">Here's what's happening at CrunchBite today.</p>
+      </motion.div>
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -25,54 +31,54 @@ export default function AdminDashboard() {
           value="$12,845.50" 
           change="+12.5%" 
           trend="up" 
-          icon={<DollarSign className="text-green-600" />}
-          bgColor="bg-green-50"
+          icon={<DollarSign size={20} />}
         />
         <StatCard 
           title="Total Orders" 
           value="456" 
           change="+8.2%" 
           trend="up" 
-          icon={<ShoppingBag className="text-blue-600" />}
-          bgColor="bg-blue-50"
+          icon={<ShoppingBag size={20} />}
         />
         <StatCard 
           title="New Customers" 
           value="89" 
           change="-3.1%" 
           trend="down" 
-          icon={<Users className="text-purple-600" />}
-          bgColor="bg-purple-50"
+          icon={<Users size={20} />}
         />
         <StatCard 
           title="Avg. Preparation" 
           value="14.2 min" 
           change="+2.4%" 
           trend="up" 
-          icon={<Clock className="text-orange-600" />}
-          bgColor="bg-orange-50"
+          icon={<Clock size={20} />}
         />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Recent Orders */}
-        <div className="lg:col-span-2 bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
-          <div className="p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
-            <h3 className="font-bold text-lg">Recent Orders</h3>
-            <button className="text-orange-500 text-sm font-semibold hover:underline">View All</button>
+        <motion.div 
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          className="lg:col-span-2 bg-[#101010] rounded-[2rem] border border-white/5 shadow-2xl overflow-hidden"
+        >
+          <div className="p-8 border-b border-white/5 flex items-center justify-between">
+            <h3 className="font-black uppercase tracking-widest text-sm text-[#E1E0CC]">Recent Orders</h3>
+            <button className="text-primary text-[10px] font-black uppercase tracking-widest hover:underline">View All</button>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full text-left">
               <thead>
-                <tr className="bg-slate-50 dark:bg-slate-800/50 text-slate-500 text-xs uppercase tracking-wider">
-                  <th className="px-6 py-4 font-semibold">Order ID</th>
-                  <th className="px-6 py-4 font-semibold">Customer</th>
-                  <th className="px-6 py-4 font-semibold">Items</th>
-                  <th className="px-6 py-4 font-semibold">Status</th>
-                  <th className="px-6 py-4 font-semibold text-right">Amount</th>
+                <tr className="bg-white/5 text-primary/40 text-[10px] font-black uppercase tracking-widest">
+                  <th className="px-8 py-5">Order ID</th>
+                  <th className="px-8 py-5">Customer</th>
+                  <th className="px-8 py-5">Items</th>
+                  <th className="px-8 py-5">Status</th>
+                  <th className="px-8 py-5 text-right">Amount</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+              <tbody className="divide-y divide-white/5">
                 <OrderRow id="#CB-1092" name="Alice Smith" items="2 Burgers, 1 Fries" status="Delivered" amount="$24.50" />
                 <OrderRow id="#CB-1093" name="Bob Johnson" items="1 Chicken Sandwich" status="Preparing" amount="$12.99" />
                 <OrderRow id="#CB-1094" name="Charlie Brown" items="3 Shakes, 2 Burgers" status="Pending" amount="$45.20" />
@@ -81,74 +87,86 @@ export default function AdminDashboard() {
               </tbody>
             </table>
           </div>
-        </div>
+        </motion.div>
 
         {/* Top Products */}
-        <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm p-6">
-          <h3 className="font-bold text-lg mb-6">Top Selling Items</h3>
-          <div className="space-y-6">
+        <motion.div 
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          className="bg-[#101010] rounded-[2rem] border border-white/5 shadow-2xl p-8"
+        >
+          <h3 className="font-black uppercase tracking-widest text-sm text-[#E1E0CC] mb-8">Top Selling Items</h3>
+          <div className="space-y-8">
             <TopProduct name="Classic Crunch Burger" sales="1,240" percentage={85} color="bg-orange-500" />
             <TopProduct name="Spicy Chicken Sandwich" sales="980" percentage={65} color="bg-red-500" />
             <TopProduct name="Loaded Fries" sales="850" percentage={55} color="bg-yellow-500" />
             <TopProduct name="Vanilla Bean Shake" sales="720" percentage={45} color="bg-blue-500" />
           </div>
-        </div>
+        </motion.div>
       </div>
     </div>
   );
 }
 
-function StatCard({ title, value, change, trend, icon, bgColor }: any) {
+function StatCard({ title, value, change, trend, icon }: any) {
   return (
-    <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm transition-all hover:shadow-md hover:-translate-y-1">
-      <div className="flex justify-between items-start mb-4">
-        <div className={`${bgColor} w-12 h-12 rounded-2xl flex items-center justify-center`}>
+    <motion.div 
+      whileHover={{ y: -5 }}
+      className="bg-[#101010] p-8 rounded-[2rem] border border-white/5 shadow-2xl transition-all"
+    >
+      <div className="flex justify-between items-start mb-6">
+        <div className="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center text-primary shadow-inner">
           {icon}
         </div>
-        <div className={`flex items-center gap-1 text-sm font-medium ${trend === 'up' ? 'text-green-600' : 'text-red-600'}`}>
+        <div className={`flex items-center gap-1 text-[10px] font-black uppercase tracking-widest ${trend === 'up' ? 'text-green-500' : 'text-red-500'}`}>
           {change}
-          {trend === 'up' ? <ArrowUpRight size={16} /> : <ArrowDownRight size={16} />}
+          {trend === 'up' ? <ArrowUpRight size={14} /> : <ArrowDownRight size={14} />}
         </div>
       </div>
       <div>
-        <p className="text-slate-500 text-sm font-medium">{title}</p>
-        <h4 className="text-2xl font-bold text-slate-900 dark:text-white mt-1">{value}</h4>
+        <p className="text-primary/40 text-[10px] font-black uppercase tracking-widest">{title}</p>
+        <h4 className="text-3xl font-black text-[#E1E0CC] mt-2 tracking-tighter">{value}</h4>
       </div>
-    </div>
+    </motion.div>
   );
 }
 
 function OrderRow({ id, name, items, status, amount }: any) {
   const statusColors: any = {
-    'Delivered': 'bg-green-100 text-green-700',
-    'Preparing': 'bg-blue-100 text-blue-700',
-    'Pending': 'bg-yellow-100 text-yellow-700'
+    'Delivered': 'bg-green-500/10 text-green-500 border-green-500/20',
+    'Preparing': 'bg-blue-500/10 text-blue-500 border-blue-500/20',
+    'Pending': 'bg-yellow-500/10 text-yellow-500 border-yellow-500/20'
   };
 
   return (
-    <tr className="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
-      <td className="px-6 py-4 text-sm font-medium text-slate-900 dark:text-white">{id}</td>
-      <td className="px-6 py-4 text-sm text-slate-600 dark:text-slate-400">{name}</td>
-      <td className="px-6 py-4 text-sm text-slate-600 dark:text-slate-400">{items}</td>
-      <td className="px-6 py-4">
-        <span className={`px-2.5 py-1 rounded-full text-xs font-bold ${statusColors[status]}`}>
+    <tr className="hover:bg-white/5 transition-colors group">
+      <td className="px-8 py-5 text-sm font-bold text-[#E1E0CC]">{id}</td>
+      <td className="px-8 py-5 text-sm text-primary/60 font-medium">{name}</td>
+      <td className="px-8 py-5 text-sm text-primary/40 font-medium">{items}</td>
+      <td className="px-8 py-5">
+        <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border ${statusColors[status]}`}>
           {status}
         </span>
       </td>
-      <td className="px-6 py-4 text-sm font-bold text-right text-slate-900 dark:text-white">{amount}</td>
+      <td className="px-8 py-5 text-sm font-black text-right text-primary">{amount}</td>
     </tr>
   );
 }
 
 function TopProduct({ name, sales, percentage, color }: any) {
   return (
-    <div className="space-y-2">
-      <div className="flex justify-between items-center text-sm">
-        <span className="font-medium text-slate-700 dark:text-slate-300">{name}</span>
-        <span className="text-slate-500">{sales} sold</span>
+    <div className="space-y-3">
+      <div className="flex justify-between items-center">
+        <span className="font-bold text-xs text-[#E1E0CC] uppercase tracking-wide">{name}</span>
+        <span className="text-primary/40 text-[10px] font-black uppercase tracking-widest">{sales} sold</span>
       </div>
-      <div className="h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
-        <div className={`h-full ${color}`} style={{ width: `${percentage}%` }} />
+      <div className="h-1.5 bg-white/5 rounded-full overflow-hidden shadow-inner">
+        <motion.div 
+          initial={{ width: 0 }}
+          whileInView={{ width: `${percentage}%` }}
+          transition={{ duration: 1, ease: "easeOut" }}
+          className={`h-full ${color} shadow-lg`} 
+        />
       </div>
     </div>
   );
