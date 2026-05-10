@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { ShoppingCart, Menu, X, Utensils, UserCircle, LogIn, LogOut } from 'lucide-react';
 import { useCartStore } from '@/store/useCartStore';
+import { useAdminStore } from '@/store/useAdminStore';
 import { createClient } from '@/utils/supabase/client';
 import { User } from '@supabase/supabase-js';
 
@@ -36,10 +37,13 @@ export default function Navbar() {
     window.location.href = '/';
   };
 
+  const adminWhitelist = useAdminStore((state) => state.adminWhitelist);
+  
   const navLinks = [
     { name: 'Home', href: '/' },
     { name: 'Menu', href: '/#menu' },
     { name: 'Offers', href: '/#offers' },
+    ...(user && adminWhitelist.includes(user.email || '') ? [{ name: 'Admin', href: '/admin' }] : []),
   ];
 
   return (
