@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from 'react';
 import { 
-  Settings as SettingsIcon, 
   User, 
   Bell, 
   Lock, 
@@ -12,19 +11,21 @@ import {
   ShieldCheck,
   CreditCard,
   X,
-  CheckCircle2
+  CheckCircle2,
+  RefreshCw
 } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useAdminStore } from '@/store/useAdminStore';
 
 export default function SettingsPage() {
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const [isSaving, setIsSaving] = useState(false);
+  const [isDiagnosticRunning, setIsDiagnosticRunning] = useState(false);
   
   // Store values
   const { adminName, adminEmail, setAdminName } = useAdminStore();
   const [localName, setLocalName] = useState(adminName);
 
-  // Keep local name in sync with store when opening
   useEffect(() => {
     if (activeSection === 'Profile') {
       setLocalName(adminName);
@@ -33,150 +34,189 @@ export default function SettingsPage() {
 
   const handleSave = () => {
     setIsSaving(true);
-    
-    // Actually update the store
     if (activeSection === 'Profile') {
       setAdminName(localName);
     }
-
     setTimeout(() => {
       setIsSaving(false);
       setActiveSection(null);
     }, 1000);
   };
 
-  return (
-    <div className="max-w-4xl space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-      <div>
-        <h2 className="text-3xl font-bold text-slate-900 dark:text-white">Admin Settings</h2>
-        <p className="text-slate-500">Configure your profile, security, and application preferences.</p>
-      </div>
+  const runDiagnostic = () => {
+    setIsDiagnosticRunning(true);
+    setTimeout(() => setIsDiagnosticRunning(false), 3000);
+  };
 
-      <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm divide-y divide-slate-100 dark:divide-slate-800">
+  return (
+    <div className="max-w-4xl space-y-12">
+      <motion.div
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+      >
+        <h2 className="text-4xl font-black text-[#E1E0CC] uppercase tracking-tighter">Admin Settings</h2>
+        <p className="text-primary/40 text-sm font-bold uppercase tracking-widest mt-2">Configure profile, security, and application preferences.</p>
+      </motion.div>
+
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="bg-[#101010] rounded-[2.5rem] border border-white/5 shadow-2xl overflow-hidden divide-y divide-white/5"
+      >
         <SettingSection 
           onClick={() => setActiveSection('Profile')}
-          icon={<User className="text-blue-500" />} 
-          title="Profile Information" 
-          description="Update your personal details and public information."
+          icon={<User className="text-primary" size={20} />} 
+          title="Profile Identity" 
+          description="Update personal details and public visibility."
         />
         <SettingSection 
           onClick={() => setActiveSection('Notifications')}
-          icon={<Bell className="text-orange-500" />} 
-          title="Notifications" 
-          description="Manage how you receive alerts and updates."
+          icon={<Bell className="text-primary" size={20} />} 
+          title="Alert Protocols" 
+          description="Manage real-time alerts and system updates."
         />
         <SettingSection 
           onClick={() => setActiveSection('Security')}
-          icon={<Lock className="text-red-500" />} 
-          title="Security & Password" 
-          description="Protect your account with 2FA and strong passwords."
+          icon={<Lock className="text-primary" size={20} />} 
+          title="Encryption & Security" 
+          description="Manage 2FA, keys, and authorization levels."
         />
         <SettingSection 
-          onClick={() => setActiveSection('Billing')}
-          icon={<CreditCard className="text-green-500" />} 
-          title="Billing & Payments" 
-          description="Manage your subscription plans and payment methods."
-        />
-        <SettingSection 
-          onClick={() => setActiveSection('Language')}
-          icon={<Globe className="text-purple-500" />} 
-          title="Language & Region" 
-          description="Set your preferred language and local timezone."
+          onClick={() => setActiveSection('Finance')}
+          icon={<CreditCard className="text-primary" size={20} />} 
+          title="Fiscal Configuration" 
+          description="Manage payment gateways and subscription nodes."
         />
         <SettingSection 
           onClick={() => setActiveSection('Appearance')}
-          icon={<Moon className="text-slate-400" />} 
-          title="Appearance" 
-          description="Switch between light and dark mode for your dashboard."
+          icon={<Moon className="text-primary" size={20} />} 
+          title="Visual Interface" 
+          description="Toggle cinematic modes and interface densities."
           last
         />
-      </div>
+      </motion.div>
 
       {/* System Status */}
-      <div className="bg-orange-50 dark:bg-orange-950/20 rounded-3xl p-8 border border-orange-100 dark:border-orange-900/30 flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-2xl bg-orange-500 flex items-center justify-center text-white">
-            <ShieldCheck size={28} />
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="bg-primary rounded-[2.5rem] p-10 text-black shadow-2xl shadow-primary/20 flex flex-col md:flex-row items-center justify-between gap-8 relative overflow-hidden group"
+      >
+        <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-[100px] -mr-32 -mt-32 group-hover:bg-white/20 transition-all duration-700" />
+        
+        <div className="flex items-center gap-6 relative z-10">
+          <div className="w-16 h-16 rounded-[1.25rem] bg-black/10 flex items-center justify-center text-black shadow-inner border border-black/5">
+            <ShieldCheck size={32} />
           </div>
           <div>
-            <h4 className="font-bold text-slate-900 dark:text-white text-lg">System Status</h4>
-            <p className="text-sm text-slate-500">All systems operational. Last security scan: 2 hours ago.</p>
+            <h4 className="font-black text-black text-xl uppercase tracking-tighter">Core System Status</h4>
+            <p className="text-[10px] font-black uppercase tracking-widest text-black/40 mt-1">All nodes operational. Security scan clean.</p>
           </div>
         </div>
-        <button className="px-6 py-2.5 bg-white dark:bg-slate-900 border border-orange-200 dark:border-orange-800 text-orange-600 font-bold rounded-xl hover:bg-orange-500 hover:text-white transition-all shadow-sm">
-          Run Diagnostic
+        
+        <button 
+          onClick={runDiagnostic}
+          disabled={isDiagnosticRunning}
+          className="px-8 py-4 bg-black text-white font-black rounded-2xl hover:scale-105 transition-all shadow-xl text-[10px] uppercase tracking-widest disabled:opacity-70 flex items-center gap-3 relative z-10 active:scale-95"
+        >
+          {isDiagnosticRunning ? (
+            <>
+              <RefreshCw size={16} className="animate-spin" />
+              Scanning...
+            </>
+          ) : (
+            'Run Diagnostic'
+          )}
         </button>
-      </div>
+      </motion.div>
 
       {/* Settings Modal */}
-      {activeSection && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-300">
-          <div className="bg-white dark:bg-slate-900 w-full max-w-lg rounded-[2.5rem] p-10 shadow-2xl relative overflow-hidden">
-            <button 
-              onClick={() => setActiveSection(null)}
-              className="absolute top-6 right-6 text-slate-400 hover:text-slate-600 transition-colors"
+      <AnimatePresence>
+        {activeSection && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-black/80 backdrop-blur-md">
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              className="bg-[#101010] w-full max-w-lg rounded-[3rem] p-10 border border-white/10 shadow-2xl relative overflow-hidden"
             >
-              <X size={24} />
-            </button>
-            
-            <div className="mb-8">
-              <h3 className="text-2xl font-black uppercase tracking-tight mb-2">{activeSection} Settings</h3>
-              <p className="text-slate-500 text-sm">Configure your {activeSection.toLowerCase()} preferences below.</p>
-            </div>
-
-            <div className="space-y-6">
-              {activeSection === 'Profile' && (
-                <div className="space-y-4">
-                  <div className="flex items-center gap-6 mb-6">
-                    <div className="w-20 h-20 rounded-3xl bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center text-2xl font-bold text-orange-500">
-                      {localName.split(' ').map(n => n[0]).join('')}
-                    </div>
-                    <button className="text-orange-500 font-bold text-sm hover:underline">Change Photo</button>
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">Display Name</label>
-                    <input 
-                      type="text" 
-                      value={localName} 
-                      onChange={(e) => setLocalName(e.target.value)}
-                      className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border-none rounded-2xl focus:ring-2 focus:ring-orange-500" 
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">Email Address</label>
-                    <input type="email" value={adminEmail} readOnly className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border-none rounded-2xl text-slate-400 cursor-not-allowed" />
-                  </div>
-                </div>
-              )}
-
-              {activeSection !== 'Profile' && (
-                <div className="py-12 text-center text-slate-500 italic">
-                  Advanced {activeSection.toLowerCase()} controls are being updated.
-                </div>
-              )}
-
-              <div className="flex gap-4 pt-4">
-                <button 
-                  onClick={() => setActiveSection(null)}
-                  className="flex-1 py-4 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-black rounded-2xl hover:bg-slate-200 transition-all uppercase tracking-tight"
-                >
-                  Cancel
-                </button>
-                <button 
-                  onClick={handleSave}
-                  className="flex-[2] py-4 bg-orange-500 text-white font-black rounded-2xl shadow-xl shadow-orange-500/20 hover:bg-orange-600 transition-all uppercase tracking-tight flex items-center justify-center"
-                >
-                  {isSaving ? (
-                    <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                  ) : (
-                    'Save Changes'
-                  )}
-                </button>
+              <div className="absolute top-0 right-0 w-48 h-48 bg-primary/5 rounded-full blur-[100px] -mr-24 -mt-24" />
+              
+              <button 
+                onClick={() => setActiveSection(null)}
+                className="absolute top-8 right-8 text-primary/20 hover:text-primary transition-all p-2 hover:bg-white/5 rounded-xl"
+              >
+                <X size={24} />
+              </button>
+              
+              <div className="mb-10 relative z-10">
+                <h3 className="text-3xl font-black text-[#E1E0CC] uppercase tracking-tighter mb-3">{activeSection} Configuration</h3>
+                <p className="text-primary/40 font-bold uppercase tracking-widest text-[10px]">Modify your {activeSection.toLowerCase()} protocol settings.</p>
               </div>
-            </div>
+
+              <div className="space-y-8 relative z-10">
+                {activeSection === 'Profile' && (
+                  <div className="space-y-8">
+                    <div className="flex items-center gap-8 mb-4">
+                      <div className="w-24 h-24 rounded-[2rem] bg-primary/10 border border-primary/20 flex items-center justify-center text-3xl font-black text-primary shadow-inner">
+                        {localName.split(' ').map(n => n[0]).join('')}
+                      </div>
+                      <button className="text-primary text-[10px] font-black uppercase tracking-[0.2em] border-b border-primary/20 hover:border-primary transition-all">Upload Identifier</button>
+                    </div>
+                    
+                    <div className="space-y-3">
+                      <label className="text-[10px] font-black uppercase tracking-widest text-primary/40 ml-4">Authorized Identity Name</label>
+                      <input 
+                        type="text" 
+                        value={localName} 
+                        onChange={(e) => setLocalName(e.target.value)}
+                        className="w-full px-6 py-5 bg-black/40 border border-white/5 rounded-2xl focus:outline-none focus:border-primary/50 transition-all text-[#E1E0CC] font-bold" 
+                      />
+                    </div>
+                    
+                    <div className="space-y-3">
+                      <label className="text-[10px] font-black uppercase tracking-widest text-primary/40 ml-4">Secure Communication Port (Email)</label>
+                      <input type="email" value={adminEmail} readOnly className="w-full px-6 py-5 bg-black/10 border border-white/5 rounded-2xl text-primary/20 cursor-not-allowed font-bold" />
+                    </div>
+                  </div>
+                )}
+
+                {activeSection !== 'Profile' && (
+                  <div className="py-16 text-center">
+                    <RefreshCw size={48} className="mx-auto text-primary/10 mb-6" />
+                    <p className="text-primary/40 font-black uppercase tracking-widest text-xs italic">
+                      Advanced {activeSection.toLowerCase()} modules are encrypted.
+                    </p>
+                  </div>
+                )}
+
+                <div className="flex gap-4 pt-4">
+                  <button 
+                    onClick={() => setActiveSection(null)}
+                    className="flex-1 py-5 bg-white/5 text-primary/40 font-black rounded-2xl hover:bg-white/10 transition-all uppercase tracking-widest text-[10px] active:scale-95"
+                  >
+                    Abort
+                  </button>
+                  <button 
+                    onClick={handleSave}
+                    disabled={isSaving}
+                    className="flex-[2] py-5 bg-primary text-black font-black rounded-2xl shadow-2xl shadow-primary/20 hover:scale-[1.02] transition-all uppercase tracking-widest text-[10px] active:scale-95 flex items-center justify-center gap-3"
+                  >
+                    {isSaving ? (
+                      <RefreshCw size={16} className="animate-spin" />
+                    ) : (
+                      <>
+                        Commit Changes
+                        <CheckCircle2 size={16} />
+                      </>
+                    )}
+                  </button>
+                </div>
+              </div>
+            </motion.div>
           </div>
-        </div>
-      )}
+        )}
+      </AnimatePresence>
     </div>
   );
 }
@@ -185,18 +225,18 @@ function SettingSection({ icon, title, description, onClick, last = false }: any
   return (
     <div 
       onClick={onClick}
-      className={`p-6 flex items-center justify-between hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors cursor-pointer ${!last ? 'group border-b border-slate-100 dark:border-slate-800' : ''}`}
+      className={`p-8 flex items-center justify-between hover:bg-white/[0.03] transition-all cursor-pointer group relative ${!last ? 'border-b border-white/5' : ''}`}
     >
-      <div className="flex items-center gap-5">
-        <div className="w-12 h-12 rounded-2xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center border border-slate-100 dark:border-slate-700">
+      <div className="flex items-center gap-6">
+        <div className="w-14 h-14 rounded-2xl bg-white/[0.02] flex items-center justify-center border border-white/5 group-hover:border-primary/20 group-hover:bg-primary/5 transition-all text-primary/40 group-hover:text-primary">
           {icon}
         </div>
         <div>
-          <h4 className="font-bold text-slate-800 dark:text-slate-200">{title}</h4>
-          <p className="text-sm text-slate-500">{description}</p>
+          <h4 className="font-black text-[#E1E0CC] uppercase tracking-tight group-hover:text-primary transition-colors">{title}</h4>
+          <p className="text-[10px] font-bold text-primary/40 uppercase tracking-widest mt-1">{description}</p>
         </div>
       </div>
-      <ChevronRight className="text-slate-300 group-hover:text-slate-500 group-hover:translate-x-1 transition-all" size={20} />
+      <ChevronRight className="text-primary/10 group-hover:text-primary group-hover:translate-x-2 transition-all" size={24} />
     </div>
   );
 }

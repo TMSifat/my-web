@@ -3,10 +3,8 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Mail, Phone, MapPin, Send, MessageCircle, Globe, Share2, Loader2, CheckCircle2 } from 'lucide-react';
-import { createClient } from '@/utils/supabase/client';
 
 export default function Contact() {
-  const supabase = createClient();
   const [loading, setLoading] = React.useState(false);
   const [submitted, setSubmitted] = React.useState(false);
   const [formData, setFormData] = React.useState({
@@ -20,18 +18,21 @@ export default function Contact() {
     setLoading(true);
 
     try {
-      const { error } = await supabase
-        .from('contact_messages')
-        .insert([formData]);
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
 
-      if (error) throw error;
-      
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Failed to send');
+
       setSubmitted(true);
       setFormData({ full_name: '', email: '', message: '' });
       setTimeout(() => setSubmitted(false), 5000);
-    } catch (error) {
-      console.error('Error sending message:', error);
-      alert('Failed to send message. Please try again.');
+    } catch (error: any) {
+      console.error('Submission error:', error);
+      alert(`Failed to send: ${error.message}`);
     } finally {
       setLoading(false);
     }
