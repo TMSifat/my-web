@@ -48,27 +48,33 @@ export default function Menu() {
   };
 
   return (
-    <section id="menu" className="py-20 bg-background">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-6xl font-black text-slate-900 dark:text-white mb-4 uppercase tracking-tighter">
-            Our <span className="text-orange-500">Menu</span>
+    <section id="menu" className="py-24 bg-black relative overflow-hidden">
+      {/* Background Glow */}
+      <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_0%,#ea580c15_0%,transparent_50%)] pointer-events-none" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="text-left mb-16">
+          <span className="text-primary text-[10px] sm:text-xs uppercase tracking-widest block mb-4">
+            Curated selection
+          </span>
+          <h2 className="text-4xl md:text-6xl font-medium text-[#E1E0CC] mb-4 tracking-tighter uppercase">
+            Signature <span className="font-serif italic text-primary">Flavors</span>
           </h2>
-          <p className="text-slate-500 text-lg max-w-2xl mx-auto">
-            Experience the perfect crunch with our premium selection of handcrafted meals.
+          <p className="text-primary/60 text-base md:text-lg max-w-xl leading-snug">
+            Every item is a masterpiece of crunch and taste, engineered for the ultimate culinary immersion.
           </p>
         </div>
 
         {/* Category Filters */}
-        <div className="flex flex-wrap justify-center gap-3 mb-16">
+        <div className="flex flex-wrap justify-start gap-4 mb-16">
           {categories.map((category) => (
             <button
               key={category}
               onClick={() => setActiveCategory(category)}
-              className={`px-8 py-3 rounded-2xl font-black transition-all uppercase tracking-tight text-sm ${
+              className={`px-8 py-2 rounded-full text-xs font-bold transition-all uppercase tracking-widest border ${
                 activeCategory === category
-                  ? 'bg-orange-500 text-white shadow-xl shadow-orange-500/30'
-                  : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-800 hover:border-orange-500'
+                  ? 'bg-primary text-black border-primary shadow-2xl shadow-primary/20'
+                  : 'bg-transparent text-primary/40 border-primary/10 hover:border-primary/40 hover:text-primary/70'
               }`}
             >
               {category}

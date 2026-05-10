@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useRef } from "react";
-import { useScroll } from "framer-motion";
+import { useScroll, motion } from "framer-motion";
 import { WordsPullUpMultiStyle, AnimatedLetter } from "./ui/prisma-components";
 
 export const PrismaAbout = () => {
@@ -11,21 +11,27 @@ export const PrismaAbout = () => {
     offset: ["start 0.8", "end 0.2"],
   });
 
-  const bodyText = "Over the last seven years, I have perfected the art of the perfect crunch, crafting recipes that blend traditional flavors with modern culinary techniques. Together with our team, we have created a menu that has earned acclaim from food critics and burger lovers across the globe.";
+  const bodyText = "Over the last seven years, we have perfected the art of the perfect crunch, crafting recipes that blend traditional flavors with modern culinary techniques. Together with our team, we have created a menu that has earned acclaim from food critics and burger lovers across the globe.";
   const characters = bodyText.split("");
 
   return (
-    <section className="bg-black py-24 md:py-32 px-4 md:px-6">
-      <div className="max-w-6xl mx-auto bg-[#101010] rounded-[2rem] p-8 md:p-16 lg:p-24 text-center">
+    <section className="bg-black py-24 md:py-32 px-4 md:px-6 relative overflow-hidden">
+      {/* Abstract Glow Background */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_20%_30%,#ea580c0d_0%,transparent_50%)]" />
+        <div className="absolute bottom-0 right-0 w-full h-full bg-[radial-gradient(circle_at_80%_70%,#ef444405_0%,transparent_50%)]" />
+      </div>
+
+      <div className="max-w-6xl mx-auto bg-[#101010] rounded-[2rem] p-8 md:p-16 lg:p-24 text-center relative z-10">
         <span className="text-primary text-[10px] sm:text-xs uppercase tracking-widest block mb-8">
           The Perfect Crunch
         </span>
 
         <WordsPullUpMultiStyle
           segments={[
-            { text: "I am the Lead Chef,", className: "font-normal" },
-            { text: "a flavor-obsessed creator.", className: "font-serif italic text-primary" },
-            { text: "I have skills in molecular gastronomy, spice blending, and taste architecture.", className: "font-normal" },
+            { text: "We are the Lead Chefs,", className: "font-normal" },
+            { text: "flavor-obsessed creators.", className: "font-serif italic text-primary" },
+            { text: "We have skills in molecular gastronomy, spice blending, and taste architecture.", className: "font-normal" },
           ]}
           containerClassName="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl max-w-3xl mx-auto leading-[0.95] sm:leading-[0.9] text-[#E1E0CC]"
         />

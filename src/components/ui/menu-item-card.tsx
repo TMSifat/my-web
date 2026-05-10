@@ -56,7 +56,7 @@ const MenuItemCard = React.forwardRef<HTMLDivElement, MenuItemCardProps>(
       <motion.div
         ref={ref}
         className={cn(
-          "relative flex flex-col w-full max-w-sm overflow-hidden rounded-xl border bg-card text-card-foreground shadow-sm group",
+          "relative flex flex-col w-full max-w-sm overflow-hidden rounded-[2rem] border border-white/5 bg-[#101010] text-card-foreground shadow-2xl group transition-all duration-500",
           className
         )}
         variants={cardVariants}
@@ -67,10 +67,13 @@ const MenuItemCard = React.forwardRef<HTMLDivElement, MenuItemCardProps>(
         {...props}
       >
         {/* --- IMAGE & ADD BUTTON CONTAINER --- */}
-        <div className="relative overflow-hidden rounded-t-xl">
+        <div className="relative overflow-hidden rounded-t-xl bg-muted">
           <img
             src={imageUrl}
             alt={name}
+            onError={(e) => {
+              (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500&q=80";
+            }}
             className="object-cover w-full h-48 transition-transform duration-300 ease-in-out group-hover:scale-105"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
@@ -108,24 +111,24 @@ const MenuItemCard = React.forwardRef<HTMLDivElement, MenuItemCardProps>(
         </div>
 
         {/* --- CONTENT SECTION (FIXED PADDING) --- */}
-        <div className="flex flex-col flex-grow p-4 text-left">
+        <div className="flex flex-col flex-grow p-6 text-left">
           {/* --- PRICING --- */}
           <div className="flex items-baseline gap-2">
-            <span className="text-lg font-bold text-foreground">₹{price}</span>
-            <span className="text-sm line-through text-muted-foreground">₹{originalPrice}</span>
+            <span className="text-xl font-bold text-[#E1E0CC]">₹{price}</span>
+            <span className="text-sm line-through text-primary/40">₹{originalPrice}</span>
             {savings > 0 && (
-              <span className="text-sm font-semibold text-green-500">SAVE ₹{savings}</span>
+              <span className="text-[10px] font-bold text-green-500 uppercase tracking-widest px-2 py-0.5 bg-green-500/10 rounded-full">SAVE ₹{savings}</span>
             )}
           </div>
           
           {/* --- QUANTITY --- */}
-          <p className="mt-1 text-sm text-muted-foreground">{quantity}</p>
+          <p className="mt-1 text-[10px] uppercase tracking-widest font-bold text-primary/40">{quantity}</p>
           
           {/* --- ITEM NAME --- */}
-          <h3 className="mt-2 text-base font-semibold leading-tight text-foreground">{name}</h3>
+          <h3 className="mt-3 text-lg font-medium leading-tight text-[#E1E0CC]">{name}</h3>
           
           {/* --- PREP TIME --- */}
-          <div className="flex items-center gap-1.5 mt-auto pt-2 text-xs text-muted-foreground">
+          <div className="flex items-center gap-1.5 mt-auto pt-4 text-[10px] uppercase tracking-widest font-bold text-primary/30">
             <Clock className="w-3 h-3" />
             <span>{prepTimeInMinutes} mins</span>
           </div>
