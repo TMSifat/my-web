@@ -74,19 +74,29 @@ export default async function LoginPage(props: {
           >
             Sign In
           </button>
+        </div>
 
-          <div className="relative my-2">
-            <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t border-gray-300" />
-            </div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-[#f0f0f0] px-2 text-gray-500">Or continue with</span>
-            </div>
+        {searchParams?.message && (
+          <div className="mt-4 p-4 bg-orange-500/10 text-orange-500 text-center rounded-lg text-sm border border-orange-500/20 animate-in fade-in">
+            {searchParams.message}
           </div>
+        )}
+      </form>
 
+      <div className="flex flex-col gap-3 w-full mt-4">
+        <div className="relative my-2">
+          <div className="absolute inset-0 flex items-center">
+            <span className="w-full border-t border-gray-800" />
+          </div>
+          <div className="relative flex justify-center text-xs uppercase">
+            <span className="bg-[#0a0a0a] px-2 text-gray-500">Or continue with</span>
+          </div>
+        </div>
+
+        <form>
           <button
             formAction={loginWithGoogle}
-            className="inline-flex items-center justify-center rounded-lg text-sm font-bold shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2 border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 h-11 px-4 py-2 hover:shadow-md gap-2"
+            className="w-full inline-flex items-center justify-center rounded-lg text-sm font-bold shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2 border border-gray-700 bg-white text-gray-900 hover:bg-gray-100 h-11 px-4 py-2 hover:shadow-md gap-2"
           >
             <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true">
               <path
@@ -108,21 +118,15 @@ export default async function LoginPage(props: {
             </svg>
             Google
           </button>
+        </form>
 
-          <Link
-            href="/signup"
-            className="inline-flex items-center justify-center rounded-lg text-sm font-bold shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2 border border-gray-700 bg-gray-900 text-gray-300 hover:bg-gray-800 h-11 px-4 py-2 mt-2"
-          >
-            Create an Account
-          </Link>
-        </div>
-
-        {searchParams?.message && (
-          <div className="mt-4 p-4 bg-orange-50 text-orange-800 text-center rounded-lg text-sm border border-orange-200 animate-in fade-in">
-            {searchParams.message}
-          </div>
-        )}
-      </form>
+        <Link
+          href="/signup"
+          className="inline-flex items-center justify-center rounded-lg text-sm font-bold shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2 border border-gray-700 bg-gray-900 text-gray-300 hover:bg-gray-800 h-11 px-4 py-2 mt-2"
+        >
+          Create an Account
+        </Link>
+      </div>
     </div>
   )
 }
