@@ -45,33 +45,43 @@ export default function Chatbot() {
     setInputValue('');
     setIsTyping(true);
 
-    // Simulate Bot Response
-    setTimeout(() => {
-      let botResponse = '';
-      const input = text.toLowerCase();
+    try {
+      // Send the history without the initial greeting if desired, or send all.
+      // We exclude the new user message from history because we pass it separately.
+      const historyToPass = messages.filter(m => m.id !== '1').map(m => ({
+        text: m.text,
+        sender: m.sender
+      }));
 
-      if (input.includes('menu') || input.includes('food')) {
-        botResponse = "You can explore our signature Double Decker Beast and Spicy Chicken Sandwiches in the Menu section below!";
-      } else if (input.includes('offer') || input.includes('deal') || input.includes('bogof')) {
-        botResponse = "We have an amazing BOGOF offer on Mondays and Fridays! Check out the Special Offers section for the Family Feast XL too.";
-      } else if (input.includes('delivery') || input.includes('time')) {
-        botResponse = "Our average delivery time is 25-35 minutes within the city circle.";
-      } else if (input.includes('hi') || input.includes('hello')) {
-        botResponse = "Hello! I am Crunch Bot. Ready to experience the ultimate crunch? What can I get for you?";
-      } else {
-        botResponse = "That sounds interesting! Let me get a human specialist to help you with that, or you can check our contact section.";
-      }
+      const res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message: text, history: historyToPass }),
+      });
 
+      const data = await res.json();
+      
       const botMessage: Message = {
         id: (Date.now() + 1).toString(),
-        text: botResponse,
+        text: data.response || "Sorry, I am having trouble connecting to my brain right now.",
         sender: 'bot',
         timestamp: new Date(),
       };
 
       setMessages((prev) => [...prev, botMessage]);
+    } catch (error) {
+      const errorMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        text: "Oops, something went wrong on my end. Please try again later!",
+        sender: 'bot',
+        timestamp: new Date(),
+      };
+      setMessages((prev) => [...prev, errorMessage]);
+    } finally {
       setIsTyping(false);
-    }, 1500);
+    }
   };
 
   const quickActions = [

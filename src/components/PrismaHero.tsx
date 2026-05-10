@@ -48,7 +48,7 @@ export const PrismaHero = () => {
           {/* Hero Double Decker Burger Background - MASSIVE */}
           <motion.div
             initial={{ scale: 1.2, opacity: 0 }}
-            animate={{ scale: 1, opacity: 0.25 }}
+            animate={{ scale: 1, opacity: 0.6 }}
             transition={{ duration: 3, ease: "easeOut" }}
             className="absolute inset-0 flex items-center justify-center z-0 overflow-hidden"
           >
@@ -60,7 +60,7 @@ export const PrismaHero = () => {
               transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
               src="/assets/hero-burger.png" 
               alt="" 
-              className="w-full h-full object-cover scale-[1.8] opacity-30 blur-[4px] md:blur-[2px] mix-blend-screen"
+              className="w-full h-full object-cover scale-[1.8] opacity-60 blur-[4px] md:blur-[2px] mix-blend-screen"
             />
           </motion.div>
 
