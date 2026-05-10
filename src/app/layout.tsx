@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "CrunchBite | Taste the Crunch",
-  description: "Fast-food e-commerce website for delicious burgers, chicken, and more.",
+  title: "CrunchBite | Prisma Studio",
+  description: "Experience the ultimate cinematic culinary journey.",
 };
 
 export default function RootLayout({

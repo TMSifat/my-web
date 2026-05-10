@@ -7,7 +7,6 @@ import { PrismaAbout } from '@/components/PrismaAbout';
 export default function Home() {
   return (
     <main className="min-h-screen bg-black">
-      <Navbar />
       <PrismaHero />
       <PrismaAbout />
       <Menu />
