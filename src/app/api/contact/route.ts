@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
   try {
     const { error: emailError } = await resend.emails.send({
       from: 'CrunchBite Studio <onboarding@resend.dev>', // Resend test domain allows onboarding@resend.dev to verified email
-      to: 'tanvirsifat51@gmail.com',
+      to: 'tanvirmustabisifat@gmail.com',
       subject: `🍔 New Message from ${full_name} | CrunchBite`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #0a0a0a; color: #E1E0CC; padding: 40px; border-radius: 16px; border: 1px solid #1a1a1a;">
