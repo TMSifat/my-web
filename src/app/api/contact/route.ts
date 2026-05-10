@@ -32,13 +32,15 @@ export async function POST(req: NextRequest) {
   // 2. Send Email via Gmail SMTP
   try {
     const transporter = nodemailer.createTransport({
-      service: 'gmail',
+      host: 'smtp.gmail.com',
+      port: 465,
+      secure: true,           // SSL on port 465
       auth: {
         user: process.env.GMAIL_USER,
         pass: process.env.GMAIL_APP_PASSWORD,
       },
-      connectionTimeout: 8000,  // 8s to connect
-      socketTimeout: 8000,      // 8s idle socket
+      connectionTimeout: 10000,
+      socketTimeout: 10000,
     });
 
     const timeout = new Promise<never>((_, reject) =>
